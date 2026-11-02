@@ -1,13 +1,87 @@
+
 <ActionBar class="action-bar">
   <NavigationButton visibility="hidden"></NavigationButton>
   <GridLayout columns="50, *">
-    <Label class="action-bar-title" text="Home" colSpan="2"></Label>
+    <Label
+      class="fas"
+      text="&#xf0c9;"
+      (tap)="onDrawerButtonTap()">
+    </Label>
 
-    <Label class="fas" text="&#xf0c9;" (tap)="onDrawerButtonTap()"></Label>
+    <Label
+      class="action-bar-title"
+      text="Mi lista de lectura"
+      col="1">
+    </Label>
   </GridLayout>
 </ActionBar>
 
-<GridLayout class="page__content">
-  <Label class="page__content-icon fas" text="&#xf015;"></Label>
-  <Label class="page__content-placeholder" text="<!-- Page content goes here -->"></Label>
+<GridLayout rows="auto, *" class="page-content">
+
+  <Label
+    row="0"
+    text="Recursos para leer"
+    fontSize="20"
+    fontWeight="bold"
+    margin="15">
+  </Label>
+
+  <GridLayout row="1" rows="*">
+
+    <ListView
+      [items]="(readingResources$ | async) || []"
+      separatorColor="transparent"
+      class="tasks-list"
+      *ngIf="(readingResources$ | async)?.length > 0">
+
+      <ng-template let-resource="item">
+        <StackLayout class="task-list-item">
+
+          <GridLayout columns="*, auto" class="task-card">
+
+            <StackLayout col="0">
+              <Label
+                [text]="resource.title"
+                class="task-title"
+                textWrap="true">
+              </Label>
+
+              <Label
+                [text]="'Categoría: ' + resource.category"
+                class="task-details"
+                textWrap="true">
+              </Label>
+
+              <Label
+                [text]="resource.description"
+                class="task-details"
+                textWrap="true">
+              </Label>
+
+              <Button
+                text="Quitar de mi lista"
+                class="btn btn-outline"
+                (tap)="removeFromList(resource)">
+              </Button>
+            </StackLayout>
+
+          </GridLayout>
+
+        </StackLayout>
+      </ng-template>
+
+    </ListView>
+
+    <Label
+      *ngIf="(readingResources$ | async)?.length === 0"
+      text="Todavía no tienes recursos en tu lista de lectura. Agrega uno desde Favoritos con el botón Leer ahora."
+      class="empty-message"
+      textWrap="true"
+      horizontalAlignment="center"
+      verticalAlignment="center">
+    </Label>
+
+  </GridLayout>
+
 </GridLayout>
+

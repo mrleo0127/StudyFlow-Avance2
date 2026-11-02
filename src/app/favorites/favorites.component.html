@@ -1,0 +1,81 @@
+
+<ActionBar class="action-bar">
+  <NavigationButton visibility="hidden"></NavigationButton>
+  <GridLayout columns="50, *">
+    <Label class="fas" text="&#xf0c9;" (tap)="onDrawerButtonTap()"></Label>
+    <Label class="action-bar-title" text="Mis favoritos" col="1"></Label>
+  </GridLayout>
+</ActionBar>
+
+<GridLayout rows="auto, *" class="page-content">
+  <Label
+    row="0"
+    text="Recursos guardados"
+    fontSize="20"
+    fontWeight="bold"
+    margin="15">
+  </Label>
+
+  <GridLayout row="1" rows="*">
+    <ListView
+      [items]="favorites"
+      separatorColor="transparent"
+      class="tasks-list"
+      *ngIf="favorites.length > 0">
+
+      <ng-template let-resource="item">
+        <StackLayout class="task-list-item">
+          <GridLayout columns="*, auto" class="task-card">
+
+            <StackLayout col="0">
+              <Label
+                [text]="resource.title"
+                class="task-title"
+                textWrap="true">
+              </Label>
+
+              <Label
+                [text]="'Categoría: ' + resource.category"
+                class="task-details"
+                textWrap="true">
+              </Label>
+
+              <Label
+                [text]="resource.description"
+                class="task-details"
+                textWrap="true">
+              </Label>
+
+              <Button
+                text="Leer ahora"
+                class="btn btn-primary"
+                (tap)="readNow(resource)">
+              </Button>
+            </StackLayout>
+
+            <Label
+              col="1"
+              text="★"
+              color="#F5B400"
+              fontSize="28"
+              padding="10"
+              verticalAlignment="top"
+              (tap)="removeFavorite(resource)">
+            </Label>
+
+          </GridLayout>
+        </StackLayout>
+      </ng-template>
+    </ListView>
+
+    <Label
+      *ngIf="favorites.length === 0"
+      text="Todavía no tienes recursos favoritos."
+      class="empty-message"
+      textWrap="true"
+      horizontalAlignment="center"
+      verticalAlignment="center">
+    </Label>
+  </GridLayout>
+</GridLayout>
+

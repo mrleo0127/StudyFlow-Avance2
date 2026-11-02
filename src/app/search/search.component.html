@@ -1,3 +1,4 @@
+
 <ActionBar class="action-bar">
   <NavigationButton visibility="hidden"></NavigationButton>
 
@@ -7,6 +8,7 @@
       text="&#xf0c9;"
       (tap)="onDrawerButtonTap()"
     ></Label>
+
     <Label
       class="action-bar-title"
       text="Buscar recursos"
@@ -56,32 +58,46 @@
       [items]="resources"
       separatorColor="transparent"
       class="tasks-list"
-      *ngIf="!loading && !errorMessage"
+      *ngIf="!loading && !errorMessage && resources.length > 0"
     >
       <ng-template let-resource="item">
 
         <StackLayout class="task-list-item">
-          <StackLayout class="task-card">
+          <GridLayout columns="*, auto" class="task-card">
+
+            <StackLayout col="0">
+
+              <Label
+                [text]="resource.title"
+                class="task-title"
+                textWrap="true"
+              ></Label>
+
+              <Label
+                [text]="'Categoría: ' + resource.category"
+                class="task-details"
+                textWrap="true"
+              ></Label>
+
+              <Label
+                [text]="resource.description"
+                class="task-details"
+                textWrap="true"
+              ></Label>
+
+            </StackLayout>
 
             <Label
-              [text]="resource.title"
-              class="task-title"
-              textWrap="true"
+              col="1"
+              [text]="favoriteIds.includes(resource.id) ? '★' : '☆'"
+              [color]="favoriteIds.includes(resource.id) ? '#F5B400' : '#808080'"
+              fontSize="28"
+              verticalAlignment="top"
+              padding="10"
+              (tap)="toggleFavorite(resource)"
             ></Label>
 
-            <Label
-              [text]="'Categoría: ' + resource.category"
-              class="task-details"
-              textWrap="true"
-            ></Label>
-
-            <Label
-              [text]="resource.description"
-              class="task-details"
-              textWrap="true"
-            ></Label>
-
-          </StackLayout>
+          </GridLayout>
         </StackLayout>
 
       </ng-template>
@@ -96,3 +112,4 @@
 
   </GridLayout>
 </GridLayout>
+

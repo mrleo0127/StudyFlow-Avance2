@@ -5,6 +5,7 @@ import {
   ResourcesService,
   Resource,
 } from '../services/resources.service'
+import { FavoritesService } from '../services/favorites.service'
 
 @Component({
   standalone: false,
@@ -16,15 +17,38 @@ export class SearchComponent implements OnInit {
   resources: Resource[] = []
   loading = false
   errorMessage = ''
+  favoriteIds: number[] = []
 
   constructor(
   private resourcesService: ResourcesService,
-  private cdr: ChangeDetectorRef
+  private cdr: ChangeDetectorRef,
+  private favoritesService: FavoritesService
 ) {}
 
   ngOnInit(): void {
-    this.loadResources()
-  }
+  this.loadFavorites()
+  this.loadResources()
+}
+
+loadFavorites(): void {
+  this.favoriteIds = this.favoritesService
+    .getFavorites()
+    .map((resource) => resource.id)
+}
+
+toggleFavorite(resource: Resource): void {
+  const added = this.favoritesService.toggleFavorite(resource)
+
+  this.loadFavorites()
+
+  console.log(
+    added
+      ? 'Recurso agregado a favoritos'
+      : 'Recurso eliminado de favoritos'
+  )
+
+  this.cdr.detectChanges()
+}
 
   loadResources(): void {
   this.loading = true

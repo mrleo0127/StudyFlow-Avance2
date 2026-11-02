@@ -13,6 +13,13 @@ const routes: Routes = [
   { path: 'search', loadChildren: () => import('~/app/search/search.module').then((m) => m.SearchModule) },
   { path: 'tasks', loadChildren: () => import('~/app/tasks/tasks.module').then((m) => m.TasksModule) },
   { path: 'settings', loadChildren: () => import('~/app/settings/settings.module').then((m) => m.SettingsModule) },
+  {
+  path: 'favorites',
+  loadChildren: () =>
+    import('./favorites/favorites.module').then(
+      (m) => m.FavoritesModule
+    ),
+},
 ]
 @NgModule({
   imports: [NativeScriptRouterModule.forRoot(routes)],
