@@ -1,6 +1,10 @@
+
 import { Component, OnInit } from '@angular/core'
+import {
+  Application,
+  ApplicationSettings,
+} from '@nativescript/core'
 import { RadSideDrawer } from 'nativescript-ui-sidedrawer'
-import { Application } from '@nativescript/core'
 
 @Component({
   standalone: false,
@@ -8,12 +12,33 @@ import { Application } from '@nativescript/core'
   templateUrl: './settings.component.html',
 })
 export class SettingsComponent implements OnInit {
-  constructor() {
-    // Use the component constructor to inject providers.
-  }
+
+  userName = ''
+  currentUserName = ''
+  message = ''
 
   ngOnInit(): void {
-    // Init your component properties here.
+    this.currentUserName = ApplicationSettings.getString(
+      'studyflow_username',
+      ''
+    )
+
+    this.userName = this.currentUserName
+  }
+
+  saveUserName(): void {
+    const name = this.userName.trim()
+
+    if (!name) {
+      this.message = 'Por favor, ingresa un nombre.'
+      return
+    }
+
+    ApplicationSettings.setString('studyflow_username', name)
+
+    this.currentUserName = name
+    this.userName = name
+    this.message = 'Nombre guardado correctamente.'
   }
 
   onDrawerButtonTap(): void {
@@ -21,3 +46,4 @@ export class SettingsComponent implements OnInit {
     sideDrawer.showDrawer()
   }
 }
+

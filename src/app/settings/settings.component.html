@@ -1,13 +1,69 @@
+
 <ActionBar class="action-bar">
   <NavigationButton visibility="hidden"></NavigationButton>
-  <GridLayout columns="50, *">
-    <Label class="action-bar-title" text="Settings" colSpan="2"></Label>
 
-    <Label class="fas" text="&#xf0c9;" (tap)="onDrawerButtonTap()"></Label>
+  <GridLayout columns="50, *">
+    <Label
+      class="fas"
+      text="&#xf0c9;"
+      (tap)="onDrawerButtonTap()"
+    ></Label>
+
+    <Label
+      class="action-bar-title"
+      text="Configuración"
+      col="1"
+    ></Label>
   </GridLayout>
 </ActionBar>
 
-<GridLayout class="page__content">
-  <Label class="page__content-icon fas" text="&#xf013;"></Label>
-  <Label class="page__content-placeholder" text="<!-- Page content goes here -->"></Label>
-</GridLayout>
+<ScrollView>
+  <StackLayout class="page-content" padding="20">
+
+    <Label
+      text="Configuración de usuario"
+      fontSize="22"
+      fontWeight="bold"
+      class="m-b-20"
+    ></Label>
+
+    <Label
+      text="Nombre actual:"
+      fontSize="14"
+    ></Label>
+
+    <Label
+      [text]="currentUserName || 'Aún no has configurado tu nombre'"
+      fontSize="18"
+      class="m-b-20"
+      textWrap="true"
+    ></Label>
+
+    <Label
+      text="Editar nombre de usuario"
+      fontSize="16"
+      fontWeight="bold"
+    ></Label>
+
+    <TextField
+      hint="Ingresa tu nombre"
+      [(ngModel)]="userName"
+      autocorrect="false"
+      class="input"
+    ></TextField>
+
+    <Button
+      text="Guardar nombre"
+      (tap)="saveUserName()"
+      class="btn btn-primary"
+    ></Button>
+
+    <Label
+      [text]="message"
+      class="m-t-10"
+      textWrap="true"
+    ></Label>
+
+  </StackLayout>
+</ScrollView>
+
