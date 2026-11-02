@@ -2,62 +2,97 @@
   <NavigationButton visibility="hidden"></NavigationButton>
 
   <GridLayout columns="50, *">
-    <Label class="fas" text="&#xf0c9;" (tap)="onDrawerButtonTap()"></Label>
-    <Label class="action-bar-title" text="Buscar tareas" col="1"></Label>
+    <Label
+      class="fas"
+      text="&#xf0c9;"
+      (tap)="onDrawerButtonTap()"
+    ></Label>
+    <Label
+      class="action-bar-title"
+      text="Buscar recursos"
+      col="1"
+    ></Label>
   </GridLayout>
 </ActionBar>
 
 <GridLayout rows="auto, *" class="page-content">
-  <StackLayout row="0" class="search-container">
-    <TextField
-  hint="Buscar por tarea o asignatura..."
-  [(ngModel)]="searchText"
-  #searchInput="ngModel"
-  minSearchLength
-  class="search-input"
-></TextField>
 
-<Label
-  *ngIf="searchInput.invalid && searchInput.touched"
-  text="Escribe al menos 3 caracteres para buscar."
-  class="empty-message"
-></Label>
+  <!-- Buscador -->
+  <StackLayout row="0" class="search-container">
+
+    <TextField
+      hint="Buscar por título o categoría..."
+      [(ngModel)]="searchText"
+      class="search-input"
+    ></TextField>
+
+    <Button
+      text="Buscar"
+      (tap)="onSearch()"
+      class="btn btn-primary"
+    ></Button>
+
   </StackLayout>
 
-  <ListView
-    row="1"
-    [items]="filteredTasks"
-    separatorColor="transparent"
-    class="tasks-list"
-  >
-    <ng-template let-task="item">
-      <FlexboxLayout flexDirection="column" class="task-list-item">
-        <StackLayout class="task-card">
-          <Label
-            [text]="task.title"
-            class="task-title"
-            textWrap="true"
-          ></Label>
+  <!-- Resultados -->
+  <GridLayout row="1" rows="auto, *">
 
-          <Label
-            [text]="task.subject + ' • ' + task.dueDate"
-            class="task-details"
-            textWrap="true"
-          ></Label>
+    <Label
+      row="0"
+      *ngIf="loading"
+      text="Cargando recursos..."
+      class="empty-message"
+    ></Label>
 
-          <Label
-            [text]="task.completed ? 'Completada' : 'Pendiente'"
-            class="task-details"
-          ></Label>
+    <Label
+      row="0"
+      *ngIf="errorMessage"
+      [text]="errorMessage"
+      class="empty-message"
+    ></Label>
+
+    <ListView
+      row="1"
+      [items]="resources"
+      separatorColor="transparent"
+      class="tasks-list"
+      *ngIf="!loading && !errorMessage"
+    >
+      <ng-template let-resource="item">
+
+        <StackLayout class="task-list-item">
+          <StackLayout class="task-card">
+
+            <Label
+              [text]="resource.title"
+              class="task-title"
+              textWrap="true"
+            ></Label>
+
+            <Label
+              [text]="'Categoría: ' + resource.category"
+              class="task-details"
+              textWrap="true"
+            ></Label>
+
+            <Label
+              [text]="resource.description"
+              class="task-details"
+              textWrap="true"
+            ></Label>
+
+          </StackLayout>
         </StackLayout>
-      </FlexboxLayout>
-    </ng-template>
-  </ListView>
 
-  <Label
-    row="1"
-    *ngIf="filteredTasks.length === 0"
-    text="No se encontraron tareas."
-    class="empty-message"
-  ></Label>
+      </ng-template>
+    </ListView>
+
+    <Label
+      row="1"
+      *ngIf="!loading && !errorMessage && resources.length === 0"
+      text="No se encontraron recursos."
+      class="empty-message"
+    ></Label>
+
+  </GridLayout>
 </GridLayout>
